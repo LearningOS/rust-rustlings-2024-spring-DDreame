@@ -3,10 +3,19 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
+fn sort<T:Ord>(array: &mut [T]){
 	//TODO
+    let len = array.len();
+    for i in 0..len {
+        let mut min_index = i;
+        for j in i + 1..len {
+            if array[j] < array[min_index] {
+                min_index = j;
+            }
+        }
+        array.swap(i, min_index);
+    }
 }
 #[cfg(test)]
 mod tests {

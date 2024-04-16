@@ -1,9 +1,8 @@
 /*
 	bfs
 	This problem requires you to implement a basic BFS algorithm
+    Thansk ChatGPT
 */
-
-//I AM NOT DONE
 use std::collections::VecDeque;
 
 // Define a graph
@@ -28,9 +27,26 @@ impl Graph {
     // Perform a breadth-first search on the graph, return the order of visited nodes
     fn bfs_with_return(&self, start: usize) -> Vec<usize> {
         
-		//TODO
+		//TODO  
+            let mut visit_order = Vec::new();
+        let mut queue = VecDeque::new();
+        let mut visited = vec![false; self.adj.len()];
 
-        let mut visit_order = vec![];
+        // Start BFS from the start node
+        visited[start] = true;
+        queue.push_back(start);
+
+        while let Some(current) = queue.pop_front() {
+            visit_order.push(current);
+
+            // Explore each adjacent vertex
+            for &neighbor in &self.adj[current] {
+                if !visited[neighbor] {
+                    visited[neighbor] = true;
+                    queue.push_back(neighbor);
+                }
+            }
+        }
         visit_order
     }
 }

@@ -37,7 +37,19 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        // Append the value to the end of the items vector
+        self.items.push(value);
+        self.count += 1;
+    
+        // Perform bubble-up operation
+        self.bubble_up(self.count);
+    }
+    
+    fn bubble_up(&mut self, mut idx: usize) {
+        while idx > 1 && (self.comparator)(&self.items[idx], &self.items[self.parent_idx(idx)]) {
+            self.items.swap(idx, self.parent_idx(idx));
+            idx = self.parent_idx(idx);
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {

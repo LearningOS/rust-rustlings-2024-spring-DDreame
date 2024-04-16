@@ -1,9 +1,9 @@
 /*
 	dfs
 	This problem requires you to implement a basic DFS traversal
+    Thanks ChatGPT
 */
 
-// I AM NOT DONE
 use std::collections::HashSet;
 
 struct Graph {
@@ -23,8 +23,20 @@ impl Graph {
     }
 
     fn dfs_util(&self, v: usize, visited: &mut HashSet<usize>, visit_order: &mut Vec<usize>) {
-        //TODO
+        // Mark the current node as visited
+        visited.insert(v);
+        // Add the current node to the visit order list
+        visit_order.push(v);
+    
+        // Go through each node adjacent to the current node
+        for &neighbour in &self.adj[v] {
+            if !visited.contains(&neighbour) {
+                // If the neighbor has not been visited, recurse
+                self.dfs_util(neighbour, visited, visit_order);
+            }
+        }
     }
+    
 
     // Perform a depth-first search on the graph, return the order of visited nodes
     fn dfs(&self, start: usize) -> Vec<usize> {
