@@ -1,8 +1,8 @@
 /*
 	heap
 	This question requires you to implement a binary heap function
+    Thanks GPT-4
 */
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -37,18 +37,32 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        // Append the value to the end of the items vector
         self.items.push(value);
         self.count += 1;
-    
-        // Perform bubble-up operation
-        self.bubble_up(self.count);
+        self.sift_up(self.count);
     }
-    
-    fn bubble_up(&mut self, mut idx: usize) {
-        while idx > 1 && (self.comparator)(&self.items[idx], &self.items[self.parent_idx(idx)]) {
-            self.items.swap(idx, self.parent_idx(idx));
-            idx = self.parent_idx(idx);
+
+    fn sift_up(&mut self, mut idx: usize) {
+        while idx > 1 {
+            let parent_idx = self.parent_idx(idx); // Calculate parent_idx before mutable borrow
+            if (self.comparator)(&self.items[idx], &self.items[parent_idx]) {
+                self.items.swap(idx, parent_idx);
+                idx = parent_idx;
+            } else {
+                break;
+            }
+        }
+    }
+
+    fn sift_down(&mut self, mut idx: usize) {
+        while self.children_present(idx) {
+            let smallest_child_idx = self.smallest_child_idx(idx);
+            if (self.comparator)(&self.items[smallest_child_idx], &self.items[idx]) {
+                self.items.swap(idx, smallest_child_idx);
+                idx = smallest_child_idx;
+            } else {
+                break;
+            }
         }
     }
 
@@ -69,8 +83,14 @@ where
     }
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
-        //TODO
-		0
+        if self.right_child_idx(idx) > self.count {
+            return self.left_child_idx(idx);
+        }
+        if (self.comparator)(&self.items[self.left_child_idx(idx)], &self.items[self.right_child_idx(idx)]) {
+            self.left_child_idx(idx)
+        } else {
+            self.right_child_idx(idx)
+        }
     }
 }
 
@@ -96,8 +116,17 @@ where
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
-        //TODO
-		None
+        if self.count == 0 {
+            return None;
+        }
+        let result = Some(std::mem::replace(&mut self.items[1], T::default()));
+        if self.count > 1 {
+            self.items.swap(1, self.count);
+        }
+        self.items.pop();
+        self.count -= 1;
+        self.sift_down(1);
+        result
     }
 }
 

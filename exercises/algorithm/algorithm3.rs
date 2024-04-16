@@ -2,6 +2,7 @@
 	sort
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
+    Thanks ChatGPT
 */
 
 fn sort<T:Ord>(array: &mut [T]){
